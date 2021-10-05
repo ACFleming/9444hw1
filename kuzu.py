@@ -12,10 +12,15 @@ class NetLin(nn.Module):
     # linear function followed by log_softmax
     def __init__(self):
         super(NetLin, self).__init__()
-        # INSERT CODE HERE
+        
+
+        #input is an image 28x28, output is a class selection of 10 options
+        self._layer1 = nn.Linear(28*28,10)
 
     def forward(self, x):
-        return 0 # CHANGE CODE HERE
+        x = x.view(-1,28*28)
+        x = self._layer1(x)
+        return F.log_softmax(x, dim=1)
 
 class NetFull(nn.Module):
     # two fully connected tanh layers followed by log softmax
