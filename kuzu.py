@@ -27,9 +27,16 @@ class NetFull(nn.Module):
     def __init__(self):
         super(NetFull, self).__init__()
         # INSERT CODE HERE
+        self._layer1 = nn.Linear(28*28,170)
+        self._layer2 = nn.Linear(170,10)
 
     def forward(self, x):
-        return 0 # CHANGE CODE HERE
+        x = x.view(-1,28*28)
+        x = self._layer1(x)
+        x = torch.tanh(x)
+        x = self._layer2(x)
+        return F.log_softmax(x, dim=1)
+         
 
 class NetConv(nn.Module):
     # two convolutional layers and one fully connected layer,
