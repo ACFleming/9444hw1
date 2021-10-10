@@ -39,6 +39,8 @@ class NetFull(nn.Module):
         return F.log_softmax(x, dim=1)
          
 
+#Note: code used to run was python kuzu_main.py --net conv --mom 0.3 --lr 0.05 > p1q3.txt
+
 class NetConv(nn.Module):
     # two convolutional layers and one fully connected layer,
     # all using relu, followed by log_softmax
