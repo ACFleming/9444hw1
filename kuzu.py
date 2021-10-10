@@ -7,6 +7,7 @@ from __future__ import print_function
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.nn.modules.pooling import MaxPool2d
 
 class NetLin(nn.Module):
     # linear function followed by log_softmax
@@ -44,6 +45,28 @@ class NetConv(nn.Module):
     def __init__(self):
         super(NetConv, self).__init__()
         # INSERT CODE HERE
+        self._conv_layer1 = nn.Conv2d(1, 16, 3)
+        self._conv_layer2 = nn.Conv2d(16, 32, 5)
+        self._linear_layer3 = nn.Linear(512,128)
+        self._linear_layer4 = nn.Linear(128,10)
+
 
     def forward(self, x):
+        x = self._conv_layer1(x)
+        x = torch.relu(x)
+        x = torch.max_pool2d(x,2)
+
+        x = self._conv_layer2(x)
+        x = torch.relu(x)
+        x = torch.max_pool2d(x,2)
+
+        x = torch.flatten(x,1)
+
+        x = self._linear_layer3(x)
+        x = torch.relu(x)
+
+        x = self._linear_layer4(x)
+        
+        return torch.log_softmax(x, dim=1)
+
         return 0 # CHANGE CODE HERE
