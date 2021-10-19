@@ -24,6 +24,8 @@ class Full2Net(torch.nn.Module):
         input = torch.sigmoid(self._layer_output(self.hid2))
         return input[:,0].view(-1,1)
 
+
+# Reached 100 with python frac_main.py --net full3 --hid 15 --init 0.35
 class Full3Net(torch.nn.Module):
     def __init__(self, hid):
         super(Full3Net, self).__init__()
