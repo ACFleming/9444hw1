@@ -73,7 +73,7 @@ class lang_reber:
             seq_raw, prob, state = self.get_one_example(self.min_length)
 
         # convert numpy array to torch tensor
-        seq = torch.from_numpy(np.asarray(seq_raw))
+        seq = torch.from_numpy(np.asarray(seq_raw)).long()
         input = F.one_hot(seq[0:-1],num_classes=7).float()
         target = torch.from_numpy(np.asarray(prob)).float()
         input = input.unsqueeze(0)
@@ -81,6 +81,8 @@ class lang_reber:
         return input, seq, target, state
 
     def print_outputs(self,epoch,seq,state,hidden,target,output):
+        torch.set_printoptions( precision=2,profile='default')
+        np.set_printoptions(precision=2)
         log_prob = F.log_softmax(output, dim=2)
         prob_out = torch.exp(log_prob)
         hidden_np = hidden.squeeze().numpy()
@@ -95,12 +97,12 @@ class lang_reber:
         print('symbol= '+''.join(symbol))
         print('label = ',*(seq.squeeze().tolist()),sep='')
         print('true probabilities:')
-        print('     B    T    S    X    P    V    E')
+        print('     B       T       S       X       P       V       E')
         for k in range(len(state)-1):
-            print(state[k+1],target_np[k,:])
-        print('hidden activations and output probabilities [BTSXPVE]:')
+            print(state[k+1], ["{:.2f}".format(p) for p in target_np[k,:]])
+        print('output probabilities [BTSXPVE] and hidden activations:')
         for k in range(len(state)-1):
-            print(state[k+1],hidden_np[k,:],prob_out_np[k,:])
+            print(state[k+1],["{:.2f}".format(p) for p in prob_out_np[k,:]], ["{:.2f}".format(h)for h in hidden_np[k,:]])
         #print(prob_out.squeeze().numpy())
         print('epoch: %d' %epoch)
         if self.embed:
