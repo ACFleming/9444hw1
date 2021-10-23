@@ -54,7 +54,7 @@ class lang_anbn:
 
     def get_sequence(self):
         seq_raw, prob, state = self.get_one_example()
-        seq = torch.from_numpy(np.asarray(seq_raw))
+        seq = torch.as_tensor(seq_raw)
         input = F.one_hot(seq[0:-1],num_classes=self.num_class).float()
         target = torch.from_numpy(np.asarray(prob)).float()
         input = input.unsqueeze(0)
@@ -73,7 +73,7 @@ class lang_anbn:
         print('label = ',*(seq.squeeze().tolist()),sep='')
         print('hidden activations and output probabilities:')
         for k in range(len(state)-1):
-            print(self.chars[seq[k+1]],hidden_np[k,:],prob_out_np[k,:])
+            print(self.chars[seq[k+1]],["{:{sign}{prec}}".format(h,sign = "+",  prec=".2f") for h in hidden_np[k,:]],["{:{sign}{prec}}".format(p,sign = "+",  prec=".2f")  for p in prob_out_np[k,:]])   
         print('epoch: %d' %epoch)
         print('error: %1.4f' %torch.mean((prob_out - target)
                                         *(prob_out - target)))

@@ -7,6 +7,7 @@ from __future__ import print_function
 import argparse
 import torch
 import torch.nn as nn
+from torch.nn import parameter
 import torch.nn.functional as F
 import torch.optim as optim
 import sklearn.metrics as metrics
@@ -91,7 +92,6 @@ def main():
         net = NetFull().to(device)
     else:
         net = NetConv().to(device)
-
     if list(net.parameters()):
         # use SGD optimizer
         optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=args.mom)

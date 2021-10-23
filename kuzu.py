@@ -47,28 +47,41 @@ class NetConv(nn.Module):
     def __init__(self):
         super(NetConv, self).__init__()
         # INSERT CODE HERE
-        self._conv_layer1 = nn.Conv2d(1, 16, 3)
+        self._conv_layer1 = nn.Conv2d(1, 16, 5)
+        
         self._conv_layer2 = nn.Conv2d(16, 32, 5)
+        
         self._linear_layer3 = nn.Linear(512,128)
+        
         self._linear_layer4 = nn.Linear(128,10)
+        # print("PARAMS:", sum(p.numel() for p in self.parameters() if p.requires_grad))
 
 
     def forward(self, x):
         x = self._conv_layer1(x)
         x = torch.relu(x)
-        x = torch.max_pool2d(x,2)
-
+        # print("HERE")
+        # print(x.shape)
+        x = torch.max_pool2d(x,2, stride=2)
+        # print("HERE2")
+        # print(x.shape)
         x = self._conv_layer2(x)
         x = torch.relu(x)
-        x = torch.max_pool2d(x,2)
-
+        # print("HERE3")
+        # print(x.shape)
+        x = torch.max_pool2d(x,2,stride=2)
+        # print("HERE4")
+        # print(x.shape)
         x = torch.flatten(x,1)
-
+        # print("HERE5")
+        # print(x.shape)
         x = self._linear_layer3(x)
         x = torch.relu(x)
-
+        # print("HERE6")
+        # print(x.shape)
         x = self._linear_layer4(x)
-        
+        # print("HERE7")
+        # print(x.shape)
         return torch.log_softmax(x, dim=1)
 
         return 0 # CHANGE CODE HERE

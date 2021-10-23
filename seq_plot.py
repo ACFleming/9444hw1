@@ -89,11 +89,20 @@ with torch.no_grad():
         hidden = hidden_seq.squeeze()
         
         lang.print_outputs(epoch, seq, state, hidden, target, output)
+
+
+        log_prob = F.log_softmax(output, dim=-1)
+        prob_out = torch.exp(log_prob)
+        prob_out_np = prob_out.squeeze().numpy()
+
+
         sys.stdout.flush()
 
         if args.hid == 2:
-            plt.scatter(hidden[:,0],hidden[:,1], c=state[1:],
-                        cmap='jet', vmin=0, vmax=max_state)
+            plt.scatter(hidden[:,0],hidden[:,1], c=state[1:],cmap='jet', vmin=0, vmax=max_state,marker=',' )
+
+            for i in range(hidden.shape[0]):
+                plt.text(x=hidden[i,0]+0.05,y=hidden[i,1],s=state[i],fontdict=dict(color='black',size=10))
         else:
             ax.scatter(hidden[:,0],hidden[:,1],hidden[:,2],
                        c=state[1:], cmap='jet',
