@@ -5,6 +5,7 @@
 
 import argparse
 import sys
+from numpy.core.fromnumeric import shape
 import torch
 import torch.nn.functional as F
 import torch.optim as optim
@@ -100,12 +101,15 @@ with torch.no_grad():
 
         if args.hid == 2:
             plt.scatter(hidden[:,0],hidden[:,1], c=state[1:],cmap='jet', vmin=0, vmax=max_state,marker=',' )
-
+            # print(hidden.shape[0])
             for i in range(hidden.shape[0]):
                 plt.text(x=hidden[i,0]+0.05,y=hidden[i,1],s=state[i],fontdict=dict(color='black',size=10))
+                
+            # plt.plot(hidden[:,0], hidden[:,1],":")
         else:
-            ax.scatter(hidden[:,0],hidden[:,1],hidden[:,2],
-                       c=state[1:], cmap='jet',
-                       vmin=0, vmax=max_state)
+            ax.scatter(hidden[:,0],hidden[:,1],hidden[:,2],c=state[1:], cmap='jet',vmin=0, vmax=max_state)
+            for i in range(hidden.shape[0]):
+                
+                plt.text(x=hidden[i,0]+0.05,y=hidden[i,1], z = hidden[i,2],s=state[i],fontdict=dict(color='black',size=10))
 
     plt.show()

@@ -27,7 +27,7 @@ def train(net, train_loader, optimizer):
         accuracy = 100*correct/total
 
     if epoch % 100 == 0:
-        print('ep:%5d loss: %6.4f acc: %5.2f' %
+        print('ep:%5d loss: %6.4f acc: %5.4f' %
              (epoch,loss.item(),accuracy))
 
     return accuracy

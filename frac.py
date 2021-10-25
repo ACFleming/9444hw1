@@ -16,6 +16,8 @@ class Full2Net(torch.nn.Module):
         self._layer1 = nn.Linear(2,hid)
         self._layer2 = nn.Linear(hid,hid)
         self._layer_output = nn.Linear(hid,1)
+        print("PARAMS:", sum(p.numel() for p in self.parameters() if p.requires_grad))
+
 
 
     def forward(self, input):
@@ -34,6 +36,8 @@ class Full3Net(torch.nn.Module):
         self._layer2 = nn.Linear(hid,hid)
         self._layer3 = nn.Linear(hid,hid)
         self._layer_output = nn.Linear(hid,1)
+        print("PARAMS:", sum(p.numel() for p in self.parameters() if p.requires_grad))
+
 
     def forward(self, input):
         self.hid1 = torch.tanh(self._layer1(input))
@@ -44,12 +48,16 @@ class Full3Net(torch.nn.Module):
 
 
 # Reached 100 with python frac_main.py --net dense --hid 15 --init 0.35
+
+#python frac_main.py --net dense --hid 14 --lr 0.008 --init 0.5
 class DenseNet(torch.nn.Module):
     def __init__(self, hid):
         super(DenseNet, self).__init__()
         self._layer1 = nn.Linear(2,hid)
         self._layer2 = nn.Linear(2+ hid,hid)
         self._layer_output = nn.Linear(2 + hid + hid,1)
+        print("PARAMS:", sum(p.numel() for p in self.parameters() if p.requires_grad))
+
 
     def forward(self, input):
         # print("INPUT:", input.size())
